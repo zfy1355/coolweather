@@ -5,7 +5,8 @@ import java.net.ProtocolException;
 /**
  * Created by home on 2016/8/4.
  */
-public interface HttpCallbakListener {
+public interface HttpCallbackListener {
+
     public void onFinish(String s);
 
     public void onError(Exception e);

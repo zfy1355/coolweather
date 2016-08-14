@@ -2,7 +2,10 @@ package org.sunny.coolweather.activity;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.view.View;
@@ -19,7 +22,7 @@ import org.sunny.coolweather.db.CoolWeatherDB;
 import org.sunny.coolweather.model.City;
 import org.sunny.coolweather.model.County;
 import org.sunny.coolweather.model.Province;
-import org.sunny.coolweather.util.HttpCallbakListener;
+import org.sunny.coolweather.util.HttpCallbackListener;
 import org.sunny.coolweather.util.HttpUtil;
 import org.sunny.coolweather.util.Utility;
 
@@ -51,6 +54,13 @@ public class ChooseAreaActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        if(prefs.getBoolean("city_selected",false)){
+            Intent intent = new Intent(this,WeatherActivity.class);
+            startActivity(intent);
+            finish();
+            return;
+        }
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.choose_area);
         listView = (ListView)findViewById(R.id.list_view);
@@ -67,6 +77,13 @@ public class ChooseAreaActivity extends Activity {
                 } else if (currentLevel == LEVEL_CITY) {
                     selectedCity = cityList.get(position);
                     queryCounties();
+                } else if (currentLevel == LEVEL_COUNTY){
+                    String countyCode = countyList.get(position).getCountyCode();
+                    Intent intent = new Intent(ChooseAreaActivity.this,
+                            WeatherActivity.class);
+                    intent.putExtra("county_code", countyCode);
+                    startActivity(intent);
+                    finish();
                 }
             }
         });
@@ -129,7 +146,7 @@ public class ChooseAreaActivity extends Activity {
             address = "http://www.weather.com.cn/data/list3/city.xml";
         }
         showProgressDialog();
-        HttpUtil.sendHttpRequest(address, new HttpCallbakListener() {
+        HttpUtil.sendHttpRequest(address, new HttpCallbackListener() {
             @Override
             public void onFinish(String response) {
                 boolean result = false;
