@@ -4,8 +4,8 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.text.TextUtils;
-import android.util.Log;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.sunny.coolweather.db.CoolWeatherDB;
@@ -91,20 +91,22 @@ public class Utility {
     /**
      * deal with data from server about weather
      */
-    public static void handleWeatherResponse(Context context, String response){
-        Log.i(Tag,response);
+    public static void handleWeatherResponse(Context context, String response,String countyCode){
         try {
             JSONObject jsonObject = new JSONObject(response);
-            JSONObject weatherInfo = jsonObject.getJSONObject("weatherinfo");
+            JSONObject weatherInfo = jsonObject.getJSONObject("data");
+            String weatherDesp = weatherInfo.getString("wendu");
+            JSONArray forecastObject = weatherInfo.getJSONArray("forecast");
+            JSONObject today = forecastObject.getJSONObject(0);
+            String fengxiang = today.getString("fengxiang");
+            String high = today.getString("high");
+            String fengli = today.getString("fengli");
+            String date = today.getString("date");
+            String low = today.getString("low");
+            String type= today.getString("type");
             String cityName = weatherInfo.getString("city");
-            String weatherCode = weatherInfo.getString("cityId");
-            String temp1 = weatherInfo.getString("temp1");
-            String temp2 = weatherInfo.getString("temp2");
-            String weatherDesp = weatherInfo.getString("weather");
-            String publishTime  = weatherInfo.getString("ptime");
-            saveWeatherInfo(context, cityName, weatherCode, temp1, temp2, weatherDesp, publishTime);
 
-
+            saveWeatherInfo(context, cityName, countyCode, low.split(" ")[1], high.split(" ")[1],type+"  "+fengli.split("级")[0]+"  "+fengxiang, date);
         } catch (JSONException e) {
             e.printStackTrace();
         }

@@ -29,39 +29,6 @@ import java.util.zip.GZIPInputStream;
 public class HttpUtil {
     private static String Tag = "HttpUtil";
 
-//    private static final OkHttpClient mOkHttpClient = new OkHttpClient();
-
-    /*public static void sendHttpRequest(final String address,final HttpCallbackListener listener){
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    Log.i(Tag,address);
-                    Request request = new Request.Builder().url(address).build();
-                    Response response = execute(request);
-                    String responseUrl = "";
-                    if (response.isSuccessful()) {
-                        responseUrl = response.body().string();
-                        Log.i(Tag,responseUrl);
-                        if (listener != null) {
-                            listener.onFinish(responseUrl);
-                        }
-                    } else {
-                        throw new IOException("Unexpected code " + response);
-                    }
-                }catch (Exception e){
-                    e.printStackTrace();
-                    listener.onError(e);
-                }
-            }
-        }).start();
-    }*/
-
-//    private static Response execute(Request request) throws IOException {
-//        return mOkHttpClient.newCall(request).execute();
-//    }
-
-
     /*
     * 从服务器端获取省县市的数据
     */
@@ -84,17 +51,6 @@ public class HttpUtil {
                     connection.setConnectTimeout(8000);
                     connection.setReadTimeout(8000);
 
-
-
-                    if(address.contains("html")){
-                        connection.setRequestProperty("Accept-Encoding", "identity");
-                        connection.setRequestProperty("Content-Type", "text/html; charset=utf-8");
-                        connection.setRequestProperty("Accept-Encoding","gzip");
-                    }
-
-                    printHeader(connection);
-
-
                     //获得服务器返回的输入流
                     String returnStr;
                     InputStream in;
@@ -106,15 +62,12 @@ public class HttpUtil {
                     while ((line = reader.readLine()) != null) {
                         response.append(line);
                     }
-                    Log.i("HTTPUtil",
-                            "------------------>" + response.toString());
                     returnStr = response.toString();
 
                     if (listener != null) {
                         listener.onFinish(returnStr);
                     }
                 } catch (Exception e) {
-                    // TODO: handle exception
                     e.printStackTrace();
                     if (listener != null) {
                         listener.onError(e);
@@ -127,28 +80,4 @@ public class HttpUtil {
             }
         }).start();
     }
-
-    private static void printHeader(HttpURLConnection connection) {
-        Map header  = connection.getHeaderFields();
-        Set set = header.entrySet();
-        Iterator iterator = set.iterator();
-        while (iterator.hasNext()){
-            Log.i(Tag,iterator.next().toString());
-        }
-    }
-
-    public static String decompress(InputStream in) throws IOException{
-
-        BufferedReader reader = new BufferedReader(new InputStreamReader(in, "utf-8"));
-        StringBuffer response = new StringBuffer();
-        String line;
-        while ((line = reader.readLine()) != null) {
-            response.append(line);
-        }
-        Log.i(Tag,"decompress : "+ response.toString());
-        return "";  //还原为原始编码的字符串
-    }
-
-
-
 }

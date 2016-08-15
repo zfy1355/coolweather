@@ -29,4 +29,5 @@ dependencies {
     compile group: 'com.squareup.okhttp', name: 'okhttp', version: '2.7.5'
     // https://mvnrepository.com/artifact/com.mcxiaoke.volley/library
     compile group: 'com.mcxiaoke.volley', name: 'library', version: '1.0.19'
+    androidTestCompile 'junit:junit:4.12'
 }
