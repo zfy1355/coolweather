@@ -1,26 +1,12 @@
 package org.sunny.coolweather.util;
 
-import android.util.Base64;
 import android.util.Log;
 
-import com.android.volley.RequestQueue;
-import com.android.volley.toolbox.Volley;
-import com.squareup.okhttp.OkHttpClient;
-import com.squareup.okhttp.Request;
-import com.squareup.okhttp.Response;
-
 import java.io.BufferedReader;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.Set;
-import java.util.zip.GZIPInputStream;
 
 
 /**
@@ -37,7 +23,6 @@ public class HttpUtil {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                // TODO Auto-generated method stub
                 HttpURLConnection connection = null;
                 Log.i(Tag,address);
                 try {

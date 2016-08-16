@@ -22,6 +22,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
 import org.sunny.coolweather.R;
+import org.sunny.coolweather.service.AutoUpdateService;
 import org.sunny.coolweather.util.HttpCallbackListener;
 import org.sunny.coolweather.util.HttpUtil;
 import org.sunny.coolweather.util.Utility;
@@ -152,5 +153,7 @@ public class WeatherActivity extends Activity implements OnClickListener {
 //        currentDateText.setText(prefs.getString("current_date", ""));
         weatherInfoLayout.setVisibility(View.VISIBLE);
         cityNameText.setVisibility(View.VISIBLE);
+        Intent intent = new Intent(this, AutoUpdateService.class);
+        startService(intent);
     }
 }
